@@ -3,14 +3,31 @@ import sqlite3
 conn = sqlite3.connect('base.db')
 print("Opened database successfully")
 
-conn.execute('''CREATE TABLE IF NOT EXISTS assets(
-        assetsid INT,
-        name TEXT PRIMARY KEY,
+conn.execute('''CREATE TABLE IF NOT EXISTS groups(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
         descr TEXT,
         price_1_day_year INT,
         price INT,
         change INT);''')
-print("Table created successfully")
+print("Table groups created successfully")
+
+conn.execute('''CREATE TABLE IF NOT EXISTS assets(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,  
+        descr TEXT,
+        price_1_day_year INT,
+        price INT,
+        change INT);''')
+print("Table assets created successfully")
+
+conn.execute('''CREATE TABLE IF NOT EXISTS assets_groups(
+        groups_id INT,
+        assets_id INT,
+        FOREIGN KEY(groups_id) REFERENCES groups(id),
+        FOREIGN KEY(assets_id) REFERENCES assets(id)
+        );''')
+print("Table assets_groups created successfully")
 
 # conn.close()
 
