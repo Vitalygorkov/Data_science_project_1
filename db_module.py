@@ -31,15 +31,27 @@ print("Table assets_groups created successfully")
 
 # conn.close()
 
-assetsid = '1'
-name = 'BTC'
-descr = 'its description'
-price_1_day_year = 28951
-price = 54200
-change = price/price_1_day_year*100
+group_id = '1'
+name_group = 'BTC'
+descr_group = 'its description'
+price_1_day_year_group = 28951
+price_group = 54200
+change_group = price_group/price_1_day_year_group*100
 
 
-assets = (assetsid, name, descr, price_1_day_year, price, change)
-conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?, ?);", assets)
+group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
+conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
 conn.commit()
+
+asset_id = '1'
+name_asset = 'BTC'
+descr_asset = 'its description'
+price_1_day_year_asset = 28951
+price_asset = 54200
+change_asset = price_asset/price_1_day_year_asset*100
+
+asset1 = (asset_id, name_asset, descr_asset, price_1_day_year_asset, price_asset, change_asset)
+conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?, ?);", asset1)
+conn.commit()
+
 conn.close()
