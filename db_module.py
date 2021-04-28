@@ -12,31 +12,28 @@ class Group(object):
 class Asset(object):
     """docstring"""
 
-    def __init__(self, name, description, marketcap, price):
+    def __init__(self, name, description, marketcap, price, price_1_day_year_asset):
         """Constructor"""
         self.name = name
         self.description = description
         self.marketcap = marketcap
         self.price = price
+        self.price_1_day_year_asset = price_1_day_year_asset
 
 conn = sqlite3.connect('base.db')
 print("Opened database successfully")
 
 conn.execute('''CREATE TABLE IF NOT EXISTS groups(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
+        name TEXT PRIMARY KEY,
         descr TEXT,
-        price_1_day_year INT,
-        price INT,
-        change INT);''')
+        marketcap INT);''')
 print("Table groups created successfully")
 
 conn.execute('''CREATE TABLE IF NOT EXISTS assets(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,  
+        name TEXT  PRIMARY KEY,  
         descr TEXT,
-        price_1_day_year INT,
         price INT,
+        price_1_day_year INT,
         change INT);''')
 print("Table assets created successfully")
 
@@ -50,34 +47,28 @@ print("Table assets_groups created successfully")
 
 # conn.close()
 
-group_id = None
-name_group = 'Сryptocurrencies'
-descr_group = 'Cryptocurrencies, DEFI, tokens, etc.'
-price_1_day_year_group = 28951
-price_group = 54200
-change_group = price_group/price_1_day_year_group*100
+Cryptocurrencies = Group('Сryptocurrencies', 'Cryptocurrencies.. etc.', 100)
+Currencies = Group('Currencies', 'Currencies, USD, EUR, RUB, etc.', 300)
+Cryptocurrencies_tuple = (Cryptocurrencies.name, Cryptocurrencies.description, Cryptocurrencies.marketcap,)
+Currencies_tuple = (Currencies.name, Currencies.description, Currencies.marketcap,)
+try:
+    conn.execute("INSERT INTO groups VALUES(?, ?, ?);", Cryptocurrencies_tuple)
+    conn.commit()
+except Exception as e:
+    print(e, 'This entry already exists')
 
-group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
-conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
-conn.commit()
-
-group_id = None
-name_group = 'Currencies'
-descr_group = 'Currencies, USD, EUR, RUB, etc.'
-price_1_day_year_group = 28951
-price_group = 54200
-change_group = price_group/price_1_day_year_group*100
+try:
+    conn.execute("INSERT INTO groups VALUES(?, ?, ?);", Currencies_tuple)
+    conn.commit()
+except Exception as e:
+    print(e, 'This entry already exists')
 
 
-group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
-conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
-conn.commit()
+BTC = Asset('BTC', 'This is the first cryptocurrency, the leader in capitalization and digital gold', 1020169351771, 54300, 28951)
 
-BTC = Asset('BTC', 'This is the first cryptocurrency, the leader in capitalization and digital gold', 1020169351771, 54300,)
+print(BTC.name, BTC.price, BTC.price_1_day_year_asset, str((BTC.price-BTC.price_1_day_year_asset)/BTC.price_1_day_year_asset*100)+'%' )
 
-print(BTC.name, BTC.price)
-
-asset_id = None
+# asset_id = None
 name_asset = 'BTC'
 descr_asset = 'its description'
 price_1_day_year_asset = 28951
@@ -88,8 +79,11 @@ change_asset = price_asset/price_1_day_year_asset*100
 # conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?, ?);", asset1)
 # conn.commit()
 
-asset1 = (asset_id, name_asset, descr_asset, price_1_day_year_asset, price_asset, change_asset)
-conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?, ?);", asset1)
-conn.commit()
+asset1 = (name_asset, descr_asset, price_1_day_year_asset, price_asset, change_asset)
+try:
+    conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?);", asset1)
+    conn.commit()
+except Exception as e:
+    print(e, 'This entry already exists')
 
 conn.close()
