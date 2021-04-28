@@ -1,5 +1,24 @@
 import sqlite3
 
+class Group(object):
+    """docstring"""
+
+    def __init__(self, name, description, marketcap):
+        """Constructor"""
+        self.name = name
+        self.description = description
+        self.marketcap = marketcap
+
+class Asset(object):
+    """docstring"""
+
+    def __init__(self, name, description, marketcap, price):
+        """Constructor"""
+        self.name = name
+        self.description = description
+        self.marketcap = marketcap
+        self.price = price
+
 conn = sqlite3.connect('base.db')
 print("Opened database successfully")
 
@@ -32,16 +51,31 @@ print("Table assets_groups created successfully")
 # conn.close()
 
 group_id = None
-name_group = 'BTC'
-descr_group = 'its description'
+name_group = 'Сryptocurrencies'
+descr_group = 'Cryptocurrencies, DEFI, tokens, etc.'
+price_1_day_year_group = 28951
+price_group = 54200
+change_group = price_group/price_1_day_year_group*100
+
+group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
+conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
+conn.commit()
+
+group_id = None
+name_group = 'Currencies'
+descr_group = 'Currencies, USD, EUR, RUB, etc.'
 price_1_day_year_group = 28951
 price_group = 54200
 change_group = price_group/price_1_day_year_group*100
 
 
-# group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
-# conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
-# conn.commit()
+group1 = (group_id, name_group, descr_group, price_1_day_year_group, price_group, change_group)
+conn.execute("INSERT INTO groups VALUES(?, ?, ?, ?, ?, ?);", group1)
+conn.commit()
+
+BTC = Asset('BTC', 'This is the first cryptocurrency, the leader in capitalization and digital gold', 1020169351771, 54300,)
+
+print(BTC.name, BTC.price)
 
 asset_id = None
 name_asset = 'BTC'
