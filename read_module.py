@@ -33,6 +33,19 @@ def select_all_assets(conn):
     for row in rows:
         print(row)
 
+def select_all_groups(conn):
+    """
+    Query all rows in the tasks table
+    :param conn: the Connection object
+    :return:
+    """
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM groups")
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
 
 def select_all_assets_groups(conn):
     """
@@ -50,5 +63,6 @@ def select_all_assets_groups(conn):
 
 conn = create_connection('base.db')
 
-select_all_assets(conn)
-select_all_assets_groups(conn)
+# select_all_assets(conn)
+select_all_groups(conn)
+# select_all_assets_groups(conn)
