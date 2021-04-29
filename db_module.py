@@ -32,16 +32,16 @@ print("Table groups created successfully")
 conn.execute('''CREATE TABLE IF NOT EXISTS assets(
         name TEXT  PRIMARY KEY,  
         descr TEXT,
+        marketcap INT,
         price INT,
-        price_1_day_year INT,
-        change INT);''')
+        price_1_day_year INT);''')
 print("Table assets created successfully")
 
 conn.execute('''CREATE TABLE IF NOT EXISTS assets_groups(
-        groups_id INT,
-        assets_id INT,
-        FOREIGN KEY(groups_id) REFERENCES groups(id),
-        FOREIGN KEY(assets_id) REFERENCES assets(id)
+        groups_name TEXT,
+        assets_name TEXT,
+        FOREIGN KEY(groups_name) REFERENCES groups(name),
+        FOREIGN KEY(assets_name) REFERENCES assets(name)
         );''')
 print("Table assets_groups created successfully")
 
@@ -68,22 +68,32 @@ BTC = Asset('BTC', 'This is the first cryptocurrency, the leader in capitalizati
 
 print(BTC.name, BTC.price, BTC.price_1_day_year_asset, str((BTC.price-BTC.price_1_day_year_asset)/BTC.price_1_day_year_asset*100)+'%' )
 
-# asset_id = None
-name_asset = 'BTC'
-descr_asset = 'its description'
-price_1_day_year_asset = 28951
-price_asset = 54200
-change_asset = price_asset/price_1_day_year_asset*100
-
-# asset1 = (asset_id, name_asset, descr_asset, price_1_day_year_asset, price_asset, change_asset)
-# conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?, ?);", asset1)
-# conn.commit()
-
-asset1 = (name_asset, descr_asset, price_1_day_year_asset, price_asset, change_asset)
 try:
-    conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?);", asset1)
+    conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?);", (BTC.name, BTC.description, BTC.marketcap, BTC.price, BTC.price_1_day_year_asset))
     conn.commit()
 except Exception as e:
     print(e, 'This entry already exists')
+
+USD = Asset('USD', 'its usd', 10000000000000, 1, 1)
+
+
+try:
+    conn.execute("INSERT INTO assets VALUES(?, ?, ?, ?, ?);", (USD.name, USD.description, USD.marketcap, USD.price, USD.price_1_day_year_asset))
+    conn.commit()
+except Exception as e:
+    print(e, 'This entry already exists')
+
+
+
+try:
+    conn.execute("INSERT INTO assets_groups VALUES(?, ?);", (Cryptocurrencies.name, BTC.name))
+    conn.commit()
+except Exception as e:
+    print(e, 'This entry already exists')
+
+
+
+
+
 
 conn.close()
